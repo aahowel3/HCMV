@@ -1,7 +1,5 @@
-# HCMV
-slim simulations and comparitive pipeline plots
-
 # HCMV SLiM
+on SOL, source activate HCMV 
 
 # Comparitive Pipeline
 one liner I used to pull out the start position and CIGAR string from a bam and the Rcode to graph it by duplication number
