@@ -2,7 +2,7 @@
 on SOL, source activate HCMV 
 
 # Comparitive Pipeline
-on SOL, plot testing playground in: /scratch/jemurra3/HCMV/trimmomatic/default_param/BWA/default 
+on Agave, plot testing playground in: /scratch/jemurra3/HCMV/trimmomatic/default_param/BWA/default 
 
 markdups_tester.sh - create deduplicated .bams for additional coverage plots
 
