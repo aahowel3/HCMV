@@ -12,6 +12,7 @@ samtools view PAV6_default_trimmomatic_BWA_default_consensus_sorted.bam | awk '
 BEGIN{OFS=":"} {print $4, $6}' > PAV6_default_trimmomatic_BWA_default_consensus_sorted.dupstags.txt
 
 pull out read name and DT tag
+now in the script pull_duplicates since agave quits on you if you run on login node 
 samtools view PAV6_default_trimmomatic_BWA_default_merlin_sorted_markdups.bam | awk '{for(i=1;i<=NF;i++){if($i~/^DT/){a=$i}} print $1,a}' | head
 
 from pulled out read name and DT tag pull out those names from the fastqs to get shortened fastq that only came from dup reads
