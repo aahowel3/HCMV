@@ -3,6 +3,7 @@ on SOL, source activate HCMV
 
 # Comparitive Pipeline
 on Agave, plot testing playground in: /scratch/jemurra3/HCMV/trimmomatic/default_param/BWA/default 
+source activate myenv
 
 markdups_tester.sh - create deduplicated .bams for additional coverage plots
 also creates a DT tagged bam without removing them to categorize duplicate types - creates a rmmarkdups.bam and markdups.bam
