@@ -20,4 +20,5 @@ from pulled out read name and DT tag pull out those names from the fastqs to get
 /scratch/jemurra3/HCMV/trimmomatic/default_param/BWA/default/crossref.sh
 
 from those desired fastqs pull out first line each read to read into R can seperate by column on read-in
-head ERR3013919_2_fastp.fastq | sed -n '1~4p'> ERR3013919_2_fastp.loc 
+#example head ERR3013919_2_fastp.fastq | sed -n '1~4p'> ERR3013919_2_fastp.loc 
+(myenv) [aahowel3@agave3:/scratch/jemurra3/HCMV/trimmomatic/default_param/BWA/default]$ sed -n '1~4p' out.fq > out_locs.txt
