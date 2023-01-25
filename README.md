@@ -5,7 +5,7 @@ on SOL, source activate HCMV
 on Agave, plot testing playground in: /scratch/jemurra3/HCMV/trimmomatic/default_param/BWA/default 
 
 markdups_tester.sh - create deduplicated .bams for additional coverage plots
-also creates a DT tagged bam without removing them to categorize duplicate types
+also creates a DT tagged bam without removing them to categorize duplicate types - creates a rmmarkdups.bam and markdups.bam
 
 one liner I used to pull out the start position and CIGAR string from a bam and the Rcode to graph it by duplication number
 samtools view PAV6_default_trimmomatic_BWA_default_consensus_sorted.bam | awk '
