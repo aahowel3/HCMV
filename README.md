@@ -13,3 +13,9 @@ BEGIN{OFS=":"} {print $4, $6}' > PAV6_default_trimmomatic_BWA_default_consensus_
 
 pull out read name and DT tag
 samtools view PAV6_default_trimmomatic_BWA_default_merlin_sorted_markdups.bam | awk '{for(i=1;i<=NF;i++){if($i~/^DT/){a=$i}} print $1,a}' | head
+
+from pulled out read name and DT tag pull out those names from the fastqs to get shortened fastq that only came from dup reads
+/scratch/jemurra3/HCMV/trimmomatic/default_param/BWA/default/crossref.sh
+
+from those desired fastqs pull out first line each read to read into R can seperate by column on read-in
+head ERR3013919_2_fastp.fastq | sed -n '1~4p'> ERR3013919_2_fastp.loc 
