@@ -22,3 +22,6 @@ from pulled out read name and DT tag pull out those names from the fastqs to get
 from those desired fastqs pull out first line each read to read into R can seperate by column on read-in
 #example head ERR3013919_2_fastp.fastq | sed -n '1~4p'> ERR3013919_2_fastp.loc 
 (myenv) [aahowel3@agave3:/scratch/jemurra3/HCMV/trimmomatic/default_param/BWA/default]$ sed -n '1~4p' out.fq > out_locs.txt
+
+checking if any tag differences between R1 and R2 - getting more dup tags than possible tags in file
+awk -F" " 'NR==FNR{a[FNR]=$1; next} {print $1, $1 == a[FNR] ? "ok" : "error"}' ERR_1.loc.txt ERR_2.loc.txt > check.out 
