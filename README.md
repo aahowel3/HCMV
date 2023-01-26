@@ -10,6 +10,7 @@ SIMUALTED DATA
 (HCMV) [aahowel3@login02:~/HCMV_slim/sum_stats]$ ls
 sc2-full_stats.py  tester_100_100.output.fix  tester_100_100.output.ms
 (HCMV) [aahowel3@login02:~/HCMV_slim/sum_stats]$ python sc2-full_stats.py tester_100_100 23500
+Inputs are the file stem that comes before .output.fix and .output.ms and the genome length 
 
 # Comparitive Pipeline
 on Agave, plot testing playground in: /scratch/jemurra3/HCMV/trimmomatic/default_param/BWA/default 
