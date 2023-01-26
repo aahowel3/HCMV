@@ -29,3 +29,4 @@ from those desired fastqs pull out first line each read to read into R can seper
 
 checking if any tag differences between R1 and R2 - getting more dup tags than possible tags in file
 awk -F" " 'NR==FNR{a[FNR]=$1; next} {print $1, $1 == a[FNR] ? "ok" : "error"}' ERR_1.loc.txt ERR_2.loc.txt > check.out 
+^^false alarm this was because you were looking at fastqs trimmed by a different tool than the pipeline that generated the alignment you were looking at 
