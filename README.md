@@ -1,9 +1,15 @@
 # HCMV SLiM
 on SOL, module load mamba, source activate HCMV 
 have to install slim like every time even in HCMV environment 
+PATIENT DATA 
 /home/aahowel3/HCMV_slim 
 
 /home/aahowel3/HCMV_slim/patient_data/patient_data.sh - general look of commands but mostly running line by line in align_quick.sh because its so buggy and breaks every line - but general idea in case we have to repeat it for other patients besdies B103
+
+SIMUALTED DATA 
+(HCMV) [aahowel3@login02:~/HCMV_slim/sum_stats]$ ls
+sc2-full_stats.py  tester_100_100.output.fix  tester_100_100.output.ms
+(HCMV) [aahowel3@login02:~/HCMV_slim/sum_stats]$ python sc2-full_stats.py tester_100_100 23500
 
 # Comparitive Pipeline
 on Agave, plot testing playground in: /scratch/jemurra3/HCMV/trimmomatic/default_param/BWA/default 
