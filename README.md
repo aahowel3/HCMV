@@ -1,5 +1,7 @@
 # HCMV SLiM
-on SOL, source activate HCMV 
+on SOL, module load mamba, source activate HCMV 
+have to install slim like every time even in HCMV environment 
+/home/aahowel3/HCMV_slim 
 
 # Comparitive Pipeline
 on Agave, plot testing playground in: /scratch/jemurra3/HCMV/trimmomatic/default_param/BWA/default 
