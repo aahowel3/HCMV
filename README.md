@@ -5,7 +5,9 @@ PATIENT DATA
 /home/aahowel3/HCMV_slim/patient_data/patient_data.sh - general look of commands but mostly running line by line because its so buggy and breaks every line - but general idea in case we have to repeat it for other patients besides B103
 
 SIMUALTED DATA 
-(HCMV) [aahowel3@login02:~/HCMV_slim/sum_stats]$ python sc2-full_stats_forkAH.py 9000 23500
+/home/aahowel3/HCMV_slim/simulations 
+HCMV_slim.sh - runs burnin or expgrowth_psi through bash 
+python sc2-full_stats_forkAH.py 9000 23500
 Inputs are the file stem that comes before .output.fix and .output.ms (9000.output.fix and 9000.output.ms) and the genome length (23500)
 
 # Comparitive Pipeline
