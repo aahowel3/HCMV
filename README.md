@@ -2,7 +2,7 @@
 on SOL, module load mamba, source activate HCMV 
 have to install slim like every time even in HCMV environment 
 PATIENT DATA 
-/home/aahowel3/HCMV_slim/patient_data/patient_data.sh - general look of commands but mostly running line by line in align_quick.sh because its so buggy and breaks every line - but general idea in case we have to repeat it for other patients besdies B103
+/home/aahowel3/HCMV_slim/patient_data/patient_data.sh - general look of commands but mostly running line by line because its so buggy and breaks every line - but general idea in case we have to repeat it for other patients besides B103
 
 SIMUALTED DATA 
 (HCMV) [aahowel3@login02:~/HCMV_slim/sum_stats]$ python sc2-full_stats_forkAH.py 9000 23500
