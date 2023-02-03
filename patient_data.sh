@@ -50,15 +50,3 @@ vcffilter -f "QUAL > 0 & SAF > 0 & SAR > 0 & RPR > 0 & RPL > 0" 475_sam_dupl_rm_
 bgzip qual0_475_sam_dupl_rm_no5.vcf
 tabix qual0_475_sam_dupl_rm_no5.vcf.gz
 bcftools stats qual0_475_sam_dupl_rm_no5.vcf.gz > qual0_475_sam_dupl_rm_no5.stats
-
-
-
-
-
-####IGNORE JUST LEAVE IT INTERLEAVED AND USE BWA MEM -P
-#headers are completely screwed - edit to remove extra characters so reformat.sh will work properly
-#cat SRR1049475.fastq | sed 's/\s.*$//' > SRR1049475_renamed.fastq
-#reformat.sh in=SRR1049475_renamed.fastq out1=SRR1049475_R1.fq out2=SRR1049475_R2.fq
-#reformat.sh in=SRR1049475.fastq allowidenticalnames=t out1=SRR1049475_R1_renamed.fq out2=SRR1049475_R2_renamed.fq
-#repair.sh -Xmx1000g overwrite=t in=SRR1049475_R1.fq in2=SRR1049475_R2.fq out=SRR1049475_R1_sorted.fq out2=SRR1049475_R2_sorted.fq outs=SRR1049475_singletons.fq
-#############################################
