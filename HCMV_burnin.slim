@@ -1,0 +1,86 @@
+initialize()
+{
+	initializeSLiMModelType("nonWF");
+	initializeSLiMOptions(keepPedigrees=T); 
+	defineConstant("f0",0.5); 
+	defineConstant("f1",0.24); 
+	defineConstant("f2",0.12); 
+	defineConstant("f3",0.13); 
+	//set as nonWF model
+	//set mutation rate
+	initializeMutationRate(2e-7);
+	initializeMutationType("m1", 1.0, "s", "return runif(1, -0.0001, 0);"); //neutral, s = 0
+	m1.convertToSubstitution = T; 
+	initializeMutationType("m2", 1.0, "s", "return runif(1, -0.001, -0.0001);"); //weakly deleterious, 1<|2Nes|<10, uniform distribution
+	m2.convertToSubstitution = T;
+	initializeMutationType("m3", 1.0, "s", "return runif(1, -0.01, -0.001);"); //moderately deleterious, 10<|2Nes|<100, uniform distribution
+	m3.convertToSubstitution = T;
+	initializeMutationType("m4", 1.0, "s", "return runif(1, -1, -0.01);"); //lethal, s = -1
+	m4.convertToSubstitution = T;
+	initializeGenomicElementType("g1", c(m1,m2,m3,m4), c(f0, f1, f2, f3));
+	initializeGenomicElement(g1, 0, 23500);
+	initializeRecombinationRate(1e-7);
+	//set global population parameters
+	defineConstant("K", 10000); // carrying-capacity density
+	defineConstant("r", 0.38); //growth rate
+}
+
+
+1 early() {
+	sim.addSubpop("p1", 1000, haploid=T);
+}
+
+
+//run time is based on polyauk 2017 F1 to F2 split 38,932
+//need to keep this in here otherwise shoots past 10,000cap - have to specify end 
+1:38932 early() {
+	p1.fitnessScaling = K / p1.individualCount;
+
+}
+
+
+reproduction()
+{
+for (x in sim.subpopulations)
+{
+//exponential growth
+N_star = x.individualCount*exp(r);	
+catn("current size=" +  x.individualCount);		
+	catn("new size=" +  N_star);
+		N_prime = asInteger(round(N_star - x.individualCount));
+		catn("added this gen=" +  N_prime);
+		inds = x.individuals;
+		fitness = x.cachedFitness(NULL);
+		breaks = sim.chromosome.drawBreakpoints(individual);
+		recombPartner = sample(inds, 1, replace=F, weights=fitness);
+		skewparent = sample(inds, 1, replace=F, weights=fitness);
+		parents1 = sample(inds, N_prime, replace=F, weights=fitness);
+		for (j in seqLen(N_prime))
+		{
+		//if progeny skew is less than 7%
+		if (((j+1)/N_prime) < 0.067){
+		child=x.addRecombinant(skewparent.genome1, recombPartner.genome1, breaks, NULL, NULL, NULL);
+//		child.tag=skewparent.tag;
+//		catn(child.tag + "check");
+		}
+		else{
+		recombPartnerrandom = subpop.sampleIndividuals(1);
+		child=x.addRecombinant(parents1[j].genome1, recombPartnerrandom.genome1, breaks, NULL, NULL, NULL);
+		//		child.tag=parents1[j].tag;
+//		catn(child.tag);
+}  
+	}
+	self.active = 0;
+	}
+}
+
+
+38932 late() {
+//sim.outputFixedMutations();
+	//print(p1.individualCount);
+	sim.outputFull("./burnin.output.full.txt"); 
+	//vary from 100 to 10000 to see if more or less sampling at the end effects your 
+	p1.outputMSSample(100, replace=F,filePath="./burnin.100.output.ms");
+	sim.outputFixedMutations("./burnin.100.output.fix", append=F);
+	}
+ 
