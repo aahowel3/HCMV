@@ -3,6 +3,8 @@ on SOL, module load mamba, source activate HCMV
 PATIENT DATA 
 /home/aahowel3/HCMV_slim/patient_data/patient_data.sh - general look of commands but mostly running line by line because its breaks - but general idea in case we have to repeat it for other patients besides B103
 
+bwa -p does not work still reads as SE reads - to remove everything after first space and replace last . wiht a / use: head SRR1049475.fastq | sed 's/\s.*$//' | sed 's/\(.*\)\./\1\//'
+
 SIMUALTED DATA 
 /home/aahowel3/HCMV_slim/simulations 
 HCMV_slim.sh - runs burnin or expgrowth_psi through bash 
