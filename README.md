@@ -15,9 +15,13 @@ HCMV_slim.sh - runs burnin or expgrowth_psi through bash
 python sc2-full_stats_forkAH.py 9000 23500
 Inputs are the file stem that comes before .output.fix and .output.ms (9000.output.fix and 9000.output.ms) and the genome length (23500)
 
+on local - plot_summarystats.R for plotting 
+
 # Comparitive Pipeline
 on Agave, plot testing playground in: /scratch/jemurra3/HCMV/trimmomatic/default_param/BWA/default 
 source activate myenv
+
+on local - coverages_HCMVdata.R for plotting 
 
 markdups_tester.sh - create deduplicated .bams for additional coverage plots
 also creates a DT tagged bam without removing them to categorize duplicate types - creates a rmmarkdups.bam and markdups.bam
