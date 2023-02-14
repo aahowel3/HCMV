@@ -6,6 +6,8 @@ PATIENT DATA
 moved rerun to scratch bc I ran out of room on /home 
 /scratch/aahowel3/HCMV_slim/patient_data_rerun
 bwa -p does not work still reads as SE reads - to remove everything after first space and replace last . wiht a / use: head SRR1049475.fastq | sed 's/\s.*$//' | sed 's/\(.*\)\./\1\//'
+AFTER I FIXED THE PAIRED END ERROR AND RAN IT THROUGH THE EXACT PIPELINE THE SUMMARY STAT SCRIPT FAILS NOW 
+ALREADY TRIED REMOVING MULTIALLELIC SITES
 
 SIMUALTED DATA 
 /home/aahowel3/HCMV_slim/simulations 
