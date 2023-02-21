@@ -16,6 +16,7 @@ python sc2-full_stats_forkAH.py 9000 23500
 Inputs are the file stem that comes before .output.fix and .output.ms (9000.output.fix and 9000.output.ms) and the genome length (23500)
 
 on local - plot_summarystats.R for plotting 
+on local - HCMV_vcffiltering.R - lets see if we can do the 100x downsampling and 2% removal reading in the vcf and spitting out a vcf - so that it goes cleanly back into terbots summary stats script
 
 # Comparitive Pipeline
 on Agave, plot testing playground in: /scratch/jemurra3/HCMV/trimmomatic/default_param/BWA/default 
