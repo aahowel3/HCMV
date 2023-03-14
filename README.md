@@ -20,6 +20,9 @@ Inputs are the file stem that comes before .output.fix and .output.ms (9000.outp
 on local - plot_summarystats.R for plotting 
 on local - HCMV_vcffiltering.R - lets see if we can do the 100x downsampling and 2% removal reading in the vcf and spitting out a vcf - so that it goes cleanly back into terbots summary stats script
 
+Patient data: SOL: /scratch/aahowel3/HCMV_slim/patient_data_rerun
+Simulations: SOL: /home/aahowel3/HCMV_slim/simulations
+
 # Comparitive Pipeline
 on Agave, plot testing playground in: /scratch/jemurra3/HCMV/trimmomatic/default_param/BWA/default 
 source activate myenv
