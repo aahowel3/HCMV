@@ -1,0 +1,124 @@
+initialize()
+{
+	initializeSLiMModelType("nonWF");
+	initializeSLiMOptions(keepPedigrees=T); 
+	//defineConstant("f0",0.5); 
+	//defineConstant("f1",0.24); 
+	//defineConstant("f2",0.12); 
+	//defineConstant("f3",0.13); 
+	//set as nonWF model
+	//set mutation rate
+	//initializeMutationRate(2e-7);
+	initializeMutationType("m1", 1.0, "s", "return runif(1, -0.0001, 0);"); //neutral, s = 0
+	initializeMutationType("m2", 1.0, "s", "return runif(1, -0.001, -0.0001);"); //weakly deleterious, 1<|2Nes|<10, uniform distribution
+	initializeMutationType("m3", 1.0, "s", "return runif(1, -0.01, -0.001);"); //moderately deleterious, 10<|2Nes|<100, uniform distribution
+	initializeMutationType("m4", 1.0, "s", "return runif(1, -1, -0.01);"); //lethal, s = -1
+	initializeGenomicElementType("g1", c(m1,m2,m3,m4), c(f0, f1, f2, f3));
+	initializeGenomicElement(g1, 0, 23500);
+	//initializeRecombinationRate(9.8e-7);
+	//set global population parameters
+	defineConstant("K", 49000); // carrying-capacity density (from plasma 6mo of B103)
+	//defineConstant("r", 0.38); //growth rate
+
+
+///MUTATION RATE//
+	//fixed recombination rate (keightley et al. 2014 average)
+	if (mu=="var")
+		{
+		lines = readFile("mu.var.txt");
+	   mu = NULL;
+	   coords = NULL;
+	   for (line in lines)
+	   	{
+	      components = strsplit(line,"\t");
+	      coords = c(coords, asInteger(components[0]));
+	      mu = c(mu, asFloat(components[1]));
+	      }
+	   coords = c(coords[1:(size(coords)-1)] - 1, 23500);
+	   initializeMutationRate(mu, coords);
+		}
+	//variable rate (from input file)
+	else
+		{
+		initializeMutationRate(mu);
+	   }    
+
+//recomb rate
+	if (recomb=="var")
+		{
+		lines = readFile("recomb.var.txt");
+	   mu = NULL;
+	   coords = NULL;
+	   for (line in lines)
+	   	{
+	      components = strsplit(line,"\t");
+	      coords = c(coords, asInteger(components[0]));
+	      mu = c(mu, asFloat(components[1]));
+	      }
+	   coords = c(coords[1:(size(coords)-1)] - 1, 23500);
+	   initializeRecombinationRate(recomb, coords);
+		}
+	//variable rate (from input file)
+	else
+		{
+		initializeRecombinationRate(recomb);
+	   }    
+
+}
+
+1 early() {
+	sim.addSubpop("p1", 433, haploid=T);
+}
+
+
+//run time is based on polyauk 2017 F1 to F2 split 38,932
+//need to keep this in here otherwise shoots past 10,000cap - have to specify end 
+1:38932 early() {
+	p1.fitnessScaling = K / p1.individualCount;
+
+}
+
+
+reproduction()
+{
+for (x in sim.subpopulations)
+{
+//exponential growth
+		N_prime = asInteger(round(x.individualCount*gr));
+		inds = x.individuals;
+		fitness = x.cachedFitness(NULL);
+		breaks = sim.chromosome.drawBreakpoints(individual);
+		recombPartner = sample(inds, 1, replace=F, weights=fitness);
+		skewparent = sample(inds, 1, replace=F, weights=fitness);
+		parents1 = sample(inds, N_prime, replace=F, weights=fitness);
+		for (j in seqLen(N_prime))
+		{
+		//if progeny skew is less than 7%
+		if (((j+1)/N_prime) < progeny){
+		child=x.addRecombinant(skewparent.genome1, recombPartner.genome1, breaks, NULL, NULL, NULL);
+//		child.tag=skewparent.tag;
+//		catn(child.tag + "check");
+		}
+		else{
+		recombPartnerrandom = subpop.sampleIndividuals(1);
+		child=x.addRecombinant(parents1[j].genome1, recombPartnerrandom.genome1, breaks, NULL, NULL, NULL);
+		//		child.tag=parents1[j].tag;
+//		catn(child.tag);
+}  
+	}
+	self.active = 0;
+	}
+}
+
+
+38932 late() {
+//sim.outputFixedMutations();
+	//print(p1.individualCount);
+	//vary from 100 to 10000 to see if more or less sampling at the end effects your 
+	catn(DFE);
+	sim.outputFull("./burnin." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + ".full.txt");
+	p1.outputMSSample(1000, replace=F,filePath="./burnin." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + ".1000.ms");
+	p1.outputMSSample(100, replace=F,filePath="./burnin." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + ".100.ms");
+	sim.outputFixedMutations("./burnin." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + ".fix.txt", append=F);
+	}
+ 
