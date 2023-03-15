@@ -7,7 +7,7 @@ moved rerun to scratch bc I ran out of room on /home
 /scratch/aahowel3/HCMV_slim/patient_data_rerun
 bwa -p does not work still reads as SE reads - to remove everything after first space and replace last . wiht a / use: head SRR1049475.fastq | sed 's/\s.*$//' | sed 's/\(.*\)\./\1\//'
 AFTER I FIXED THE PAIRED END ERROR AND RAN IT THROUGH THE EXACT PIPELINE THE SUMMARY STAT SCRIPT FAILS NOW 
-ALREADY TRIED REMOVING MULTIALLELIC SITES - issue with sites not all being the same coverage - fixed in R script HCMV_vcffiltering.R
+ALREADY TRIED REMOVING MULTIALLELIC SITES - issue with sites not all being the same coverage - fixed in R script HCMV_vcffiltering.R - have to downsample to 100 and remove 2% reads
 
 new patient data HANCHILD 1,2,3,4 in /scratch/aahowel3/HCMV_slim/patient_data/hanchild
 
@@ -22,6 +22,10 @@ on local - HCMV_vcffiltering.R - lets see if we can do the 100x downsampling and
 
 Patient data: SOL: /scratch/aahowel3/HCMV_slim/patient_data_rerun
 Simulations: SOL: /home/aahowel3/HCMV_slim/simulations
+
+Final simulations that iterate through all possible param combos in: [aahowel3@login02:~/HCMV_slim/simulations/final_sims]$ /home/aahowel3/HCMV_slim/simulations/final_sims
+
+on local var_mu_recomb_rate.R generates the variable mutation and recombination rate files and generates the all possible param combinations params.txt file
 
 # Comparitive Pipeline
 on Agave, plot testing playground in: /scratch/jemurra3/HCMV/trimmomatic/default_param/BWA/default 
