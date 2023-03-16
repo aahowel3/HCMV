@@ -23,19 +23,19 @@ initialize()
 
 ///MUTATION RATE//
 	//fixed recombination rate (keightley et al. 2014 average)
-	if (mu=="var")
+	if (murate=="var")
 		{
 		lines = readFile("mu.var.txt");
-	   mu = NULL;
 	   coords = NULL;
-	   for (line in lines)
-	   	{
+	   muts = NULL;
+	for (line in lines)
+	   {
 	      components = strsplit(line,"\t");
 	      coords = c(coords, asInteger(components[0]));
-	      mu = c(mu, asFloat(components[1]));
+	      muts = c(muts, asFloat(components[1]));
 	      }
 	   coords = c(coords[1:(size(coords)-1)] - 1, 23500);
-	   initializeMutationRate(mu, coords);
+	   initializeMutationRate(muts, coords);
 		}
 	//variable rate (from input file)
 	else
@@ -44,19 +44,19 @@ initialize()
 	   }    
 
 //recomb rate
-	if (recomb=="var")
+	if (recombrate=="var")
 		{
 		lines = readFile("recomb.var.txt");
-	   mu = NULL;
 	   coords = NULL;
+	recombin = NULL;
 	   for (line in lines)
 	   	{
 	      components = strsplit(line,"\t");
 	      coords = c(coords, asInteger(components[0]));
-	      mu = c(mu, asFloat(components[1]));
+	      recombin = c(recombin, asFloat(components[1]));
 	      }
 	   coords = c(coords[1:(size(coords)-1)] - 1, 23500);
-	   initializeRecombinationRate(recomb, coords);
+	   initializeRecombinationRate(recombin, coords);
 		}
 	//variable rate (from input file)
 	else
@@ -115,7 +115,6 @@ for (x in sim.subpopulations)
 //sim.outputFixedMutations();
 	//print(p1.individualCount);
 	//vary from 100 to 10000 to see if more or less sampling at the end effects your 
-	catn(DFE);
 	sim.outputFull("./burnin." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + ".full.txt");
 	p1.outputMSSample(1000, replace=F,filePath="./burnin." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + ".1000.ms");
 	p1.outputMSSample(100, replace=F,filePath="./burnin." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + ".100.ms");

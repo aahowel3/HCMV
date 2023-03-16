@@ -23,23 +23,23 @@ initialize()
 	defineConstant("K1", 49000); // carrying-capacity density plasma
 	defineConstant("K2", 26000000); // carrying-capacity density urine
 	//defineConstant("r", 0.38); //growth rate
-}
+
 
 ///MUTATION RATE//
 	//fixed recombination rate (keightley et al. 2014 average)
-	if (mu=='var')
+	if (murate=='var')
 		{
 		lines = readFile("mu.var.txt");
-	   mu = NULL;
+	   muts = NULL;
 	   coords = NULL;
 	   for (line in lines)
 	   	{
 	      components = strsplit(line,"\t");
 	      coords = c(coords, asInteger(components[0]));
-	      mu = c(mu, asFloat(components[1]));
+	      muts = c(muts, asFloat(components[1]));
 	      }
 	   coords = c(coords[1:(size(coords)-1)] - 1, 23500);
-	   initializeMutationRate(mu, coords);
+	   initializeMutationRate(muts, coords);
 		}
 	//variable rate (from input file)
 	else
@@ -48,31 +48,33 @@ initialize()
 	   }    
 
 //recomb rate
-	if (recomb=='var')
+	if (recombrate=='var')
 		{
 		lines = readFile("recomb.var.txt");
-	   mu = NULL;
+	   recombin = NULL;
 	   coords = NULL;
 	   for (line in lines)
 	   	{
 	      components = strsplit(line,"\t");
 	      coords = c(coords, asInteger(components[0]));
-	      mu = c(mu, asFloat(components[1]));
+	      recombin = c(recombin, asFloat(components[1]));
 	      }
 	   coords = c(coords[1:(size(coords)-1)] - 1, 23500);
-	   initializeRecombinationRate(recomb, coords);
+	   initializeRecombinationRate(recombin, coords);
 		}
 	//variable rate (from input file)
 	else
 		{
 		initializeRecombinationRate(recomb);
 	   }    
-
+}
 
 1 early () {
 	if (burnin=='with')
 	{
-	sim.readFromPopulationFile("/home/aahowel3/HCMV_slim/final_sims/"burnin." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + ".full.txt"");
+	filename="burnin." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + ".full.txt";
+	catn(filename);
+	sim.readFromPopulationFile("/home/aahowel3/HCMV_slim/simulations/final_sims/" + filename);
 	community.tick = 1;
 	sim.addSubpop("p2", 0, haploid=T);
 	p2.takeMigrants(sample(p1.individuals, 433));
