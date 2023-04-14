@@ -27,6 +27,9 @@ Final simulations that iterate through all possible param combos in: [aahowel3@l
 
 on local var_mu_recomb_rate.R generates the variable mutation and recombination rate files and generates the all possible param combinations params.txt file
 
+WHEN RUNNING FOR A VCF HAVE TO PUT ABSOLUTE LENGTH (87000) NOT RELATIVE LENGTH (23500)
+python3 sc2-full_stats-v0.2.py qual0_475_sam_dupl_rm_no5 v 87000
+
 # Comparitive Pipeline
 on Agave, plot testing playground in: /scratch/jemurra3/HCMV/trimmomatic/default_param/BWA/default 
 source activate myenv
