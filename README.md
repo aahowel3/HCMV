@@ -30,6 +30,9 @@ on local var_mu_recomb_rate.R generates the variable mutation and recombination 
 WHEN RUNNING FOR A VCF HAVE TO PUT ABSOLUTE LENGTH (87000) NOT RELATIVE LENGTH (23500)
 python3 sc2-full_stats-v0.2.py qual0_475_sam_dupl_rm_no5 v 87000
 
+THIS ONE WORKS
+(base) pfeiferlab@tCLAsol-F5KTT0T1F694 simulations % python sc2-full2_stats-v0.2_1.py congenital_urine.DFE3.2.0e-06.0.0.01.0.38.without.1000 m 23500
+
 # Comparitive Pipeline
 on Agave, plot testing playground in: /scratch/jemurra3/HCMV/trimmomatic/default_param/BWA/default 
 source activate myenv
