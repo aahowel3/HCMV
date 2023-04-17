@@ -34,6 +34,7 @@ THIS ONE WORKS
 (base) pfeiferlab@tCLAsol-F5KTT0T1F694 simulations % python sc2-full2_stats-v0.2_1.py congenital_urine.DFE3.2.0e-06.0.0.01.0.38.without.1000 m 23500
 
 get line that matters: sed -n 1630p  congenital_urine.DFE3.2.0e-07.9.8e-07.0.1.0.38.without.1000.output.csv
+*****1630 for 1000x 1626 for 100x
 
 # Comparitive Pipeline
 on Agave, plot testing playground in: /scratch/jemurra3/HCMV/trimmomatic/default_param/BWA/default 
