@@ -36,6 +36,8 @@ THIS ONE WORKS
 get line that matters: sed -n 1630p  congenital_urine.DFE3.2.0e-07.9.8e-07.0.1.0.38.without.1000.output.csv
 *****1630 for 1000x 1626 for 100x
 
+squish all relavant pdfs together:  while read -r line; do gs -1 -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=${line}.plots.all.pdf congenital_plasma.${line}.100.plots.pdf congenital_plasma.${line}.1000.plots.pdf congenital_urine.${line}.100.plots.pdf congenital_urine.${line}.1000.plots.pdf; done < goodcombos2.txt
+
 # Comparitive Pipeline
 on Agave, plot testing playground in: /scratch/jemurra3/HCMV/trimmomatic/default_param/BWA/default 
 source activate myenv
