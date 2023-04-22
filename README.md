@@ -11,6 +11,22 @@ ALREADY TRIED REMOVING MULTIALLELIC SITES - issue with sites not all being the s
 
 new patient data HANCHILD 1,2,3,4 in /scratch/aahowel3/HCMV_slim/patient_data/hanchild
 
+pipeline for B103 data is:
+1. fastqs go through patientdata.sh and output is qual_nomulti.vcf
+2. get that vcf into vcf HCMV_vcffiltering.R to downsample and 2% filter output is good.csv
+3. That vcf goes into pythonsc2 and output is good.csv 
+4. csv goes into plotsummarystats.R
+
+Started running things locally since 1x gr sims take so long - pfeiferlab@10.210.91.237
+Run sc2.py on ALL combos first
+Ran a quick and dirty check on which param combos passed by doing: sed -n 1630p congenital_urine.DFE3.2.0e-07.9.8e-07.0.1.0.38.without.1000.output.csv
+*****1630 for 1000x 1626 for 100x*****
+Created a check_paramcombos.csv by the sed -n method (double check if plasma 1000, plasma 100, urine 1000, urine 100 lenghts are uneven - because the .sc2.py method will not work if there are ZERO segregating sites period 
+Get a list of acceptable param combos using the chunk of code labelled "after filtering 2%" in HCMV_vcffiltering.R 
+
+ONCE YOU GET THAT LIST
+then in /Users/pfeiferlab/Documents/simulations/rescale_working/filter use copy_edit.sh to run acceptable combos through HCMV_filtering_forterbotscriptinput.R and sc2-full2_stats-v0.2_1_for100.py and plots_summarystats_updated_args.R for full results on filtered data. 
+
 SIMUALTED DATA 
 /home/aahowel3/HCMV_slim/simulations 
 HCMV_slim.sh - runs burnin or expgrowth_psi through bash 
