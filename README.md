@@ -1,4 +1,7 @@
 # HCMV SLiM
+
+where are our 1x replicates? lab computer #1 - in Documents/simulations/rescale ls *1.0.w*.fix.txt | wc -l - should be about 141 - need like 3 more 
+
 on SOL, module load mamba, source activate HCMV 
 PATIENT DATA 
 /home/aahowel3/HCMV_slim/patient_data/patient_data.sh - general look of commands but mostly running line by line because its breaks - but general idea in case we have to repeat it for other patients besides B103
