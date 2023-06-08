@@ -9,15 +9,17 @@ initialize()
 	//set as nonWF model
 	//set mutation rate
 	//initializeMutationRate(2e-7);
-	initializeMutationType("m1", 1.0, "s", "return runif(1, -0.0001, 0);"); //neutral, s = 0
-	initializeMutationType("m2", 1.0, "s", "return runif(1, -0.001, -0.0001);"); //weakly deleterious, 1<|2Nes|<10, uniform distribution
-	initializeMutationType("m3", 1.0, "s", "return runif(1, -0.01, -0.001);"); //moderately deleterious, 10<|2Nes|<100, uniform distribution
-	initializeMutationType("m4", 1.0, "s", "return runif(1, -1, -0.01);"); //lethal, s = -1
+	//RESCALED DFE
+	initializeMutationType("m1", 1.0, "s", "return runif(1, -0.001, 0);"); //neutral, s = 0
+	initializeMutationType("m2", 1.0, "s", "return runif(1, -0.01, -0.001);"); //weakly deleterious, 1<|2Nes|<10, uniform distribution
+	initializeMutationType("m3", 1.0, "s", "return runif(1, -0.1, -0.01);"); //moderately deleterious, 10<|2Nes|<100, uniform distribution
+	initializeMutationType("m4", 1.0, "s", "return runif(1, -10, -0.1);"); //lethal, s = -1
 	initializeGenomicElementType("g1", c(m1,m2,m3,m4), c(f0, f1, f2, f3));
 	initializeGenomicElement(g1, 0, 23500);
 	//initializeRecombinationRate(9.8e-7);
 	//set global population parameters
-	defineConstant("K", 49000); // carrying-capacity density (from plasma 6mo of B103)
+	//RESCALED POPSIZE
+	defineConstant("K", 4900); // carrying-capacity density (from plasma 6mo of B103)
 	//defineConstant("r", 0.38); //growth rate
 
 
@@ -66,14 +68,15 @@ initialize()
 
 }
 
+//RESCALED INIITLA POP SIZE
 1 early() {
-	sim.addSubpop("p1", 433, haploid=T);
+	sim.addSubpop("p1", 43, haploid=T);
 }
 
 
 //run time is based on polyauk 2017 F1 to F2 split 38,932
 //need to keep this in here otherwise shoots past 10,000cap - have to specify end 
-1:38932 early() {
+1:3893 early() {
 	p1.fitnessScaling = K / p1.individualCount;
 
 }
@@ -111,7 +114,7 @@ for (x in sim.subpopulations)
 }
 
 
-38932 late() {
+3893 late() {
 //sim.outputFixedMutations();
 	//print(p1.individualCount);
 	//vary from 100 to 10000 to see if more or less sampling at the end effects your 

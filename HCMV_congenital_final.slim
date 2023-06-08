@@ -9,10 +9,10 @@ initialize()
 	//set as nonWF model
 	//set mutation rate
 	//initializeMutationRate(2e-7);
-	initializeMutationType("m1", 1.0, "s", "return runif(1, -0.0001, 0);"); //neutral, s = 0
-	initializeMutationType("m2", 1.0, "s", "return runif(1, -0.001, -0.0001);"); //weakly deleterious, 1<|2Nes|<10, uniform distribution
-	initializeMutationType("m3", 1.0, "s", "return runif(1, -0.01, -0.001);"); //moderately deleterious, 10<|2Nes|<100, uniform distribution
-	initializeMutationType("m4", 1.0, "s", "return runif(1, -1, -0.01);"); //lethal, s = -1
+	initializeMutationType("m1", 1.0, "s", "return runif(1, -0.001, 0);"); //neutral, s = 0
+	initializeMutationType("m2", 1.0, "s", "return runif(1, -0.01, -0.001);"); //weakly deleterious, 1<|2Nes|<10, uniform distribution
+	initializeMutationType("m3", 1.0, "s", "return runif(1, -0.1, -0.01);"); //moderately deleterious, 10<|2Nes|<100, uniform distribution
+	initializeMutationType("m4", 1.0, "s", "return runif(1, -10, -0.1);"); //lethal, s = -1
 	initializeGenomicElementType("g1", c(m1,m2,m3,m4), c(f0, f1, f2, f3));
 	initializeGenomicElement(g1, 0, 23500);
 	//initializeRecombinationRate(1e-7);
@@ -20,8 +20,8 @@ initialize()
 	defineConstant("mig1", 0.00137); // migration rate urine to plasma
 	defineConstant("mig2", 0.000151); // migration rate plasma to urine
 	//set global population parameters
-	defineConstant("K1", 49000); // carrying-capacity density plasma
-	defineConstant("K2", 26000000); // carrying-capacity density urine
+	defineConstant("K1", 4900); // carrying-capacity density plasma
+	defineConstant("K2", 2600000); // carrying-capacity density urine
 	//defineConstant("r", 0.38); //growth rate
 
 
@@ -74,14 +74,14 @@ initialize()
 	{
 	filename="burnin." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + ".full.txt";
 	catn(filename);
-	sim.readFromPopulationFile("/home/aahowel3/HCMV_slim/simulations/final_sims/" + filename);
+	sim.readFromPopulationFile("/Users/pfeiferlab/Documents/simulations/rescale/" + filename);
 	community.tick = 1;
 	sim.addSubpop("p2", 0, haploid=T);
-	p2.takeMigrants(sample(p1.individuals, 433));
+	p2.takeMigrants(sample(p1.individuals, 43));
 	p1.removeSubpopulation();	
 	}
 	else {
-	sim.addSubpop("p2", 433, haploid=T);
+	sim.addSubpop("p2", 43, haploid=T);
 	}
 }
 
@@ -92,7 +92,7 @@ initialize()
 
 
 //need to keep this in here otherwise shoots past 10,000cap - have to specify end 
-1:491 early() {
+1:49 early() {
 	p2.fitnessScaling = K1 / p2.individualCount;
 
 }
@@ -103,7 +103,7 @@ reproduction()
 for (x in sim.subpopulations)
 {
 //exponential growth
-	N_prime = asInteger(round(x.individualCount*gr));
+	N_prime = asInteger(ceil(x.individualCount*gr));
 		inds = x.individuals;
 		fitness = x.cachedFitness(NULL);
 		breaks = sim.chromosome.drawBreakpoints(individual);
@@ -134,20 +134,20 @@ for (x in sim.subpopulations)
 
 //70 is Renzette 2013 est of population split 2.33 months/70days - 1 tick = 1 day - poly split est is 449
 //491 is Pokalyuk 2017 estimtae of F1 pop age at infection
-70 early() {
+7 early() {
 	sim.addSubpop("p3", 0, haploid=T);
 }
-70 early(){
-migrants=sample(p2.individuals, 10);
+7 early(){
+migrants=sample(p2.individuals, 1);
 p3.takeMigrants(migrants);
 }
 
-70:491 early() {
+7:49 early() {
 	p3.fitnessScaling = K2 / p3.individualCount;
 
 }
 
-70:491 late() {
+7:49 late() {
 // random migration
 from_p2 = sample(p2.individuals, asInteger(p2.individualCount*mig2));
 from_p3 = sample(p3.individuals, asInteger(p3.individualCount*mig1));
@@ -156,14 +156,14 @@ p3.takeMigrants(from_p2);
 }
 
 //do you need to output two files for the two different populations?
-491 late() {
+49 late() {
 //sim.outputFixedMutations();
 	//print(p2.individualCount);
 	//vary from 100 to 10000 to see if more or less sampling at the end effects your 
-	p2.outputMSSample(1000, replace=F,filePath="./burnin." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + "." + burnin + ".1000.ms");
-	p2.outputMSSample(100, replace=F,filePath="./burnin." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr +  "." + burnin + ".100.ms");
-	p3.outputMSSample(1000, replace=F,filePath="./burnin." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + "." + burnin + ".1000.ms");
-	p3.outputMSSample(100, replace=F,filePath="./burnin." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr +  "." + burnin + ".100.ms");
-	sim.outputFixedMutations("./burnin." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + "." + burnin + ".fix.txt", append=F);
+	sim.outputFixedMutations("./congenital." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + "." + burnin + ".fix.txt", append=F);
+	p2.outputMSSample(100, replace=F,filePath="./congenital_plasma." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + "." + burnin + ".100.ms");
+	p3.outputMSSample(100, replace=F,filePath="./congenital_urine." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr +  "." + burnin + ".100.ms");
+	p2.outputMSSample(1000, replace=F,filePath="./congenital_plasma." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + "." + burnin + ".1000.ms");
+	p3.outputMSSample(1000, replace=F,filePath="./congenital_urine." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr +  "." + burnin + ".1000.ms");
  }
   
