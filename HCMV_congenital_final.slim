@@ -29,7 +29,7 @@ initialize()
 	//fixed recombination rate (keightley et al. 2014 average)
 	if (murate=='var')
 		{
-		lines = readFile("mu.var.txt");
+		lines = readFile("/Users/pfeiferlab/Documents/simulations_replicates/mu.var.txt");
 	   muts = NULL;
 	   coords = NULL;
 	   for (line in lines)
@@ -50,7 +50,7 @@ initialize()
 //recomb rate
 	if (recombrate=='var')
 		{
-		lines = readFile("recomb.var.txt");
+		lines = readFile("/Users/pfeiferlab/Documents/simulations_replicates/recomb.var.txt");
 	   recombin = NULL;
 	   coords = NULL;
 	   for (line in lines)
@@ -74,7 +74,7 @@ initialize()
 	{
 	filename="burnin." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + ".full.txt";
 	catn(filename);
-	sim.readFromPopulationFile("/Users/pfeiferlab/Documents/simulations/rescale/" + filename);
+	sim.readFromPopulationFile("/Users/pfeiferlab/Documents/simulations_replicates/burnin/" + filename);
 	community.tick = 1;
 	sim.addSubpop("p2", 0, haploid=T);
 	p2.takeMigrants(sample(p1.individuals, 43));
@@ -160,10 +160,13 @@ p3.takeMigrants(from_p2);
 //sim.outputFixedMutations();
 	//print(p2.individualCount);
 	//vary from 100 to 10000 to see if more or less sampling at the end effects your 
-	sim.outputFixedMutations("./congenital." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + "." + burnin + ".fix.txt", append=F);
-	p2.outputMSSample(100, replace=F,filePath="./congenital_plasma." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + "." + burnin + ".100.ms");
-	p3.outputMSSample(100, replace=F,filePath="./congenital_urine." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr +  "." + burnin + ".100.ms");
-	p2.outputMSSample(1000, replace=F,filePath="./congenital_plasma." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + "." + burnin + ".1000.ms");
-	p3.outputMSSample(1000, replace=F,filePath="./congenital_urine." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr +  "." + burnin + ".1000.ms");
+	sim.outputFixedMutations("./congenital_plasma." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + "." + burnin + ".100.output.fix", append=F);
+	sim.outputFixedMutations("./congenital_plasma." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + "." + burnin + ".1000.output.fix", append=F);
+	sim.outputFixedMutations("./congenital_urine." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + "." + burnin + ".100.output.fix", append=F);
+	sim.outputFixedMutations("./congenital_urine." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + "." + burnin + ".1000.output.fix", append=F);
+	p2.outputMSSample(100, replace=F,filePath="./congenital_plasma." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + "." + burnin + ".100.output.ms");
+	p3.outputMSSample(100, replace=F,filePath="./congenital_urine." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr +  "." + burnin + ".100.output.ms");
+	p2.outputMSSample(1000, replace=F,filePath="./congenital_plasma." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + "." + burnin + ".1000.output.ms");
+	p3.outputMSSample(1000, replace=F,filePath="./congenital_urine." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr +  "." + burnin + ".1000.output.ms");
  }
   

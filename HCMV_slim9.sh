@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for i in {8..10}
+for i in {84..90}
 do
 mkdir replicate_"$i"
 cd replicate_"$i" 
@@ -66,7 +66,6 @@ cd replicate_"$i"
 
 	#get out the list of parameter combinations you want to go to the trouble of filtering their ms files and re-running their stats using only the 2% passing 
 	Rscript ../twopercentfilter.R 
-	
 
 	#do that on the good list of parameter combinations - need a diff sc2.py for 100s
 	while read -r line
@@ -98,12 +97,12 @@ cd replicate_"$i"
         done < goodcombos2.csv
 	
 	mkdir good_combos
-	while read -r line
-	do
-	mv *${line}.* good_combos
-	done < goodcombos2.csv
-  
-	rm congenital*
+        while read -r line
+        do
+        mv *${line}.* good_combos
+        done < goodcombos2.csv
 
+        rm congenital*
+	
 	cd ../
 done 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for i in {8..10}
+for i in 21
 do
 mkdir replicate_"$i"
 cd replicate_"$i" 

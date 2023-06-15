@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for i in {8..10}
+for i in {24..30}
 do
 mkdir replicate_"$i"
 cd replicate_"$i" 
@@ -66,7 +66,6 @@ cd replicate_"$i"
 
 	#get out the list of parameter combinations you want to go to the trouble of filtering their ms files and re-running their stats using only the 2% passing 
 	Rscript ../twopercentfilter.R 
-	
 
 	#do that on the good list of parameter combinations - need a diff sc2.py for 100s
 	while read -r line
@@ -97,13 +96,13 @@ cd replicate_"$i"
         python ../sc2-full2_stats-v0.2_1.py congenital_urine.${line}.1000.filter m 23500
         done < goodcombos2.csv
 	
-	mkdir good_combos
-	while read -r line
-	do
-	mv *${line}.* good_combos
-	done < goodcombos2.csv
-  
-	rm congenital*
 
+	 mkdir good_combos
+        while read -r line
+        do
+        mv *${line}.* good_combos
+        done < goodcombos2.csv
+
+        rm congenital*
 	cd ../
 done 
