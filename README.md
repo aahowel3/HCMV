@@ -57,6 +57,14 @@ get line that matters: sed -n 1630p  congenital_urine.DFE3.2.0e-07.9.8e-07.0.1.0
 
 squish all relavant pdfs together:  while read -r line; do gs -1 -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=${line}.plots.all.pdf congenital_plasma.${line}.100.plots.pdf congenital_plasma.${line}.1000.plots.pdf congenital_urine.${line}.100.plots.pdf congenital_urine.${line}.1000.plots.pdf; done < goodcombos2.txt
 
+# what to do if runs dont finish and every replicate is missing a different combination
+for each replicate get a file with replicate name and list of complete combos
+for i in replic*; do cd $i; echo $i > ../checkfile_${i}.txt; ls congenital_urine*.100.output.fix >> ../checkfile_${i}.txt; cd ../; done
+paste all those rep files into a columnwise rep file
+paste -d' ' checkfile_replicate_{1..25}.txt > all_check.out
+theres a section in mu_var.recomb.R script that you can cross check which are missing from which replicate
+
+
 # Comparitive Pipeline
 on Agave, plot testing playground in: /scratch/jemurra3/HCMV/trimmomatic/default_param/BWA/default 
 source activate myenv
