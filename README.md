@@ -64,6 +64,7 @@ paste all those rep files into a columnwise rep file
 paste -d' ' checkfile_replicate_{1..25}.txt > all_check.out
 theres a section in mu_var.recomb.R script that you can cross check which are missing from which replicate
 
+HCMV_vcffiltering2.R - this was your original HCMV_filtering script to get number of seg sites from empirical data and convert to vcf format terbots script would take (downsampled) - messed it up a bit with script at the top which has been moved to HCMV_filtering_refined - bottom part was most useful - dont know if youll need to convert downsampled emprical to anymore since youre not evaluating simualtions on summary statistics - only seg sites
 
 # Comparitive Pipeline
 on Agave, plot testing playground in: /scratch/jemurra3/HCMV/trimmomatic/default_param/BWA/default 
