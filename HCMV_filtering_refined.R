@@ -128,24 +128,29 @@ df=as.data.frame(df, stringsAsFactors = FALSE)
 #perfect! just throws a warning not an error!!
 df[is.na(df)] <- 0
 
-###yesssssss
+###whoops whoops cant od this 
+#all those sites still need to be supported by at least one read one ither sites and at that site 
+##tris=subset(df5,  rowSums(df5[65:68] >= 2) == 3)
+#PREV CHUNK WAS FOR TOTAL THIS NOW BREAKS DOWN BY BI/TRI/QUAD ALLELEIC
+# == INSTEAD OF >=
 df5 <- df[rowSums(cbind((df$RO_down >= 2 & df$SRR > 0 & df$SRF > 0), (df$AO1_down >= 2 & df$SAR1 > 0 & df$SAF1 > 0), 
-                          (df$AO2_down >= 2 & df$SAR2 > 0 & df$SAF2 > 0),  
-                          (df$AO3_down >= 2 & df$SAR3 > 0 & df$SAF3 > 0))) >= 2,]
+                        (df$AO2_down >= 2 & df$SAR2 > 0 & df$SAF2 > 0),  
+                        (df$AO3_down >= 2 & df$SAR3 > 0 & df$SAF3 > 0))) == 3,]
+
 df5=df5[complete.cases(df5$Row.names),]
 
 #need to do the same thing but with RPR and RPR and RPL
 #there doesnt seem to be a reference equivalent for that though just the alternaties 
 ###yesssssss
-df5 <- df5[rowSums(cbind((df5$AO1_down >= 2 & df5$RPR1 > 0 & df5$RPL1 > 0), 
-                        (df5$AO2_down >= 2 & df5$RPR2 > 0 & df5$RPL2 > 0),  
-                        (df5$AO3_down >= 2 & df5$RPR3 > 0 & df5$RPL3 > 0))) >= 1,]
+#IF its not the ref allele thats being considered - then the alts MUST be supported 
+
+df5=subset(df5, ((RO_down >= 2) & rowSums(cbind((df5$AO1_down >= 2 & df5$RPR1 > 0 & df5$RPL1 > 0), 
+                         (df5$AO2_down >= 2 & df5$RPR2 > 0 & df5$RPL2 > 0),  
+                         (df5$AO3_down >= 2 & df5$RPR3 > 0 & df5$RPL3 > 0))) >= 1) | 
+             ((RO_down < 2) & rowSums(cbind((df5$AO1_down >= 2 & df5$RPR1 > 0 & df5$RPL1 > 0), 
+                                             (df5$AO2_down >= 2 & df5$RPR2 > 0 & df5$RPL2 > 0),  
+                                              (df5$AO3_down >= 2 & df5$RPR3 > 0 & df5$RPL3 > 0))) >= 2)) 
 df5=df5[complete.cases(df5$Row.names),]
-#under these conditions B103 plasma 6mo downsampled to 100 is 441 seg sites - 17 of which are truly triallelic 
-#number of truly trialleic sites
-tris=subset(df5,  rowSums(df5[65:68] >= 2) == 3)
-#quad allelic
-tris=subset(df5,  rowSums(df5[65:68] >= 2) == 4)
 
 
 
@@ -173,23 +178,19 @@ df=as.data.frame(df, stringsAsFactors = FALSE)
 df[is.na(df)] <- 0
 
 ###yesssssss
-df5 <- df[rowSums(cbind((df$RO_down >= 20 & df$SRR > 0 & df$SRF > 0), (df$AO1_down >= 2 & df$SAR1 > 0 & df$SAF1 > 0), 
+df5 <- df[rowSums(cbind((df$RO_down >= 20 & df$SRR > 0 & df$SRF > 0), (df$AO1_down >= 20 & df$SAR1 > 0 & df$SAF1 > 0), 
                         (df$AO2_down >= 20 & df$SAR2 > 0 & df$SAF2 > 0),  
-                        (df$AO3_down >= 20 & df$SAR3 > 0 & df$SAF3 > 0))) >= 2,]
+                        (df$AO3_down >= 20 & df$SAR3 > 0 & df$SAF3 > 0))) == 4,]
 df5=df5[complete.cases(df5$Row.names),]
 
-#need to do the same thing but with RPR and RPR and RPL
-#there doesnt seem to be a reference equivalent for that though just the alternaties 
-###yesssssss
-df5 <- df5[rowSums(cbind((df5$AO1_down >= 20 & df5$RPR1 > 0 & df5$RPL1 > 0), 
-                         (df5$AO2_down >= 20 & df5$RPR2 > 0 & df5$RPL2 > 0),  
-                         (df5$AO3_down >= 20 & df5$RPR3 > 0 & df5$RPL3 > 0))) >= 1,]
-df5=df5[complete.cases(df5$Row.names),]
 
-#trialleic
-tris=subset(df5,  rowSums(df5[65:68] >= 2) > 2)
-#quad allelci
-tris=subset(df5,  rowSums(df5[65:68] >= 2) > 3)
+df5=subset(df5, ((RO_down >= 20) & rowSums(cbind((df5$AO1_down >= 20 & df5$RPR1 > 0 & df5$RPL1 > 0), 
+                                                (df5$AO2_down >= 20 & df5$RPR2 > 0 & df5$RPL2 > 0),  
+                                                (df5$AO3_down >= 20 & df5$RPR3 > 0 & df5$RPL3 > 0))) >= 3) | 
+             ((RO_down < 20) & rowSums(cbind((df5$AO1_down >= 20 & df5$RPR1 > 0 & df5$RPL1 > 0), 
+                                            (df5$AO2_down >= 20 & df5$RPR2 > 0 & df5$RPL2 > 0),  
+                                            (df5$AO3_down >= 20 & df5$RPR3 > 0 & df5$RPL3 > 0))) >= 4)) 
+df5=df5[complete.cases(df5$Row.names),]
 
 
 
