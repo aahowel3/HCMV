@@ -1,5 +1,9 @@
 # HCMV SLiM
 
+new file HCMV_slim_onlysim_leftovers2.sh - checks whichs combos are missing and runs only those
+input file HAS to have carriage returns removed first
+tr '\r' , < params_congenital.txt > params_congenital_nor.txt
+
 where are our 1x replicates? lab computer #1 - in Documents/simulations/rescale ls *1.0.w*.fix.txt | wc -l - should be about 141 - need like 3 more 
 
 on SOL, module load mamba, source activate HCMV 
