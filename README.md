@@ -4,6 +4,10 @@ new file HCMV_slim_onlysim_leftovers2.sh - checks whichs combos are missing and 
 input file HAS to have carriage returns removed first
 tr '\r' , < params_congenital.txt > params_congenital_nor.txt
 
+# for combining all the final files to then put into nice plots
+for x in simulations_replicates/replicate_*/good_combos/*.1000.filter.output.csv; do sed -n 1630p $x >> allfinalsnps_andcombos.csv; done
+for x in simulations_replicates/replicate_*/good_combos/*.100.filter.output.csv; do sed -n 1626p $x >> allfinalsnps_andcombos.csv; done
+
 where are our 1x replicates? lab computer #1 - in Documents/simulations/rescale ls *1.0.w*.fix.txt | wc -l - should be about 141 - need like 3 more 
 
 on SOL, module load mamba, source activate HCMV 
