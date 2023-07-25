@@ -1,0 +1,213 @@
+initialize()
+{
+	initializeSLiMModelType("nonWF");
+	initializeSLiMOptions(keepPedigrees=T); 
+	//defineConstant("f0",0.5); 
+	//defineConstant("f1",0.24); 
+	//defineConstant("f2",0.12); 
+	//defineConstant("f3",0.13); 
+	//set as nonWF model
+	//set mutation rate
+	//initializeMutationRate(2e-7);
+	//RESCALED selection coeffecients
+	initializeMutationType("m1", 1.0, "s", "return runif(1, -0.001, 0);"); //neutral, s = 0
+	initializeMutationType("m2", 1.0, "s", "return runif(1, -0.01, -0.001);"); //weakly deleterious, 1<|2Nes|<10, uniform distribution
+	initializeMutationType("m3", 1.0, "s", "return runif(1, -0.1, -0.01);"); //moderately deleterious, 10<|2Nes|<100, uniform distribution
+	initializeMutationType("m4", 1.0, "s", "return runif(1, -10, -0.1);"); //lethal, s = -1
+	initializeGenomicElementType("g1", c(m1,m2,m3,m4), c(f0, f1, f2, f3));
+	initializeGenomicElement(g1, 0, 23500);
+	//initializeRecombinationRate(1e-7);
+	//based on Renzette 2013 tabls S2 U/P timepoint 1 
+	defineConstant("mig1", 0.000574); // migration rate urine to plasma
+	defineConstant("mig2", 0.0000390); // migration rate plasma to urine
+	//set global population parameters
+	defineConstant("K1", 4900); // carrying-capacity density plasma
+	defineConstant("K2", 2600000); // carrying-capacity density urine
+	defineConstant("K3", 4900); // carrying-capacity density maternal plasma
+//cannot use 11041 for F2 bc its an Ne value - eqvilent plasma Ne would be 530 - give it same CC as congeital plasma compartment
+	//defineConstant("r", 0.38); //growth rate
+
+
+///MUTATION RATE//
+	if (murate=='var')
+		{
+		lines = readFile("/Users/pfeiferlab/Documents/simulations_replicates/mu.var.txt");
+	   muts = NULL;
+	   coords = NULL;
+	   for (line in lines)
+	   	{
+	      components = strsplit(line,"\t");
+	      coords = c(coords, asInteger(components[0]));
+	      muts = c(muts, asFloat(components[1]));
+	      }
+	   coords = c(coords[1:(size(coords)-1)] - 1, 23500);
+	   initializeMutationRate(muts, coords);
+		}
+	//variable rate (from input file)
+	else
+		{
+		initializeMutationRate(mu);
+	   }    
+
+//recomb rate
+	if (recombrate=='var')
+		{
+		lines = readFile("/Users/pfeiferlab/Documents/simulations_replicates/recomb.var.txt");
+	   recombin = NULL;
+	   coords = NULL;
+	   for (line in lines)
+	   	{
+	      components = strsplit(line,"\t");
+	      coords = c(coords, asInteger(components[0]));
+	      recombin = c(recombin, asFloat(components[1]));
+	      }
+	   coords = c(coords[1:(size(coords)-1)] - 1, 23500);
+	   initializeRecombinationRate(recombin, coords);
+		}
+	//variable rate (from input file)
+	else
+		{
+		initializeRecombinationRate(recomb);
+	   }    
+}
+
+1 early () {
+	if (burnin=='with')
+	{
+	filename="burnin." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + ".full.txt";
+	catn(filename);
+	sim.readFromPopulationFile("/Users/pfeiferlab/Documents/simulations_replicates/burnin/" + filename);
+	community.tick = 1;
+	sim.addSubpop("p2", 0, haploid=T);
+	p2.takeMigrants(sample(p1.individuals, 43));
+	p1.removeSubpopulation();	
+	}
+	else {
+	sim.addSubpop("p2", 43, haploid=T);
+	}
+}
+
+//1 early() {
+//	sim.addSubpop("p0", 10000, haploid=T);
+//	p0.individuals.tag = 1:10000;
+//}
+
+
+//need to keep this in here otherwise shoots past 10,000cap - have to specify end 
+//1-49 = scaled length of simulation - original is 491 days long
+1:29 early() {
+	p2.fitnessScaling = K1 / p2.individualCount;
+
+}
+
+
+1:29 early() { 
+	p1.fitnessScaling = K3 / p1.individualCount;
+}
+
+
+reproduction()
+{
+for (x in sim.subpopulations)
+{
+//exponential growth
+	N_prime = asInteger(ceil(x.individualCount*gr));
+		inds = x.individuals;
+		fitness = x.cachedFitness(NULL);
+		breaks = sim.chromosome.drawBreakpoints(individual);
+		recombPartner = sample(inds, 1, replace=F, weights=fitness);
+		skewparent = sample(inds, 1, replace=F, weights=fitness);
+		parents1 = sample(inds, N_prime, replace=F, weights=fitness);
+		for (j in seqLen(N_prime))
+		{
+		//if progeny skew is less than 7%
+		if (((j+1)/N_prime) < progeny){
+		child=x.addRecombinant(skewparent.genome1, recombPartner.genome1, breaks, NULL, NULL, NULL);
+//		child.tag=skewparent.tag;
+//		catn(child.tag + "check");
+		}
+		else{
+		recombPartnerrandom = subpop.sampleIndividuals(1);
+		child=x.addRecombinant(parents1[j].genome1, recombPartnerrandom.genome1, breaks, NULL, NULL, NULL);
+//		child.tag=parents1[j].tag;
+//		catn(child.tag);
+}  
+	}
+	self.active = 0;
+	}
+}
+
+ 
+
+
+//70 is Renzette 2013 est of population split 2.33 months/70days - 1 tick = 1 day - poly split est is 449
+//491 is Pokalyuk 2017 estimtae of F1 pop age at infection
+//using day 42 (2017 paper) instead of day 70 (2013 paper) - scaled = day 4
+//original bottleneck is 100 indiv - scaled is 10 indiv
+4 early() {
+	sim.addSubpop("p3", 0, haploid=T);
+}
+4 early(){
+migrants=sample(p2.individuals, 10);
+p3.takeMigrants(migrants);
+}
+
+4:49 early() {
+	p3.fitnessScaling = K2 / p3.individualCount;
+
+}
+
+4:29 late() {
+// random migration
+from_p2 = sample(p2.individuals, asInteger(p2.individualCount*mig2));
+from_p3 = sample(p3.individuals, asInteger(p3.individualCount*mig1));
+p2.takeMigrants(from_p3); 
+p3.takeMigrants(from_p2);
+}
+
+
+
+//F2 admixture event 
+//occurs at 198 days ago - reversed is day 293 - scaled = day 29 
+//introduces 11041 indiv - scaled = 1104
+//F2 admixture event 
+//occurs at 198 days ago - reversed is day 293 - scaled = day 29 
+29 late () {
+from_p1 = sample(p1.individuals, asInteger(p1.individualCount*0.97));
+from_p2 = sample(p2.individuals, asInteger(p2.individualCount*0.03));
+p4.takeMigrants(from_p1); 
+p4.takeMigrants(from_p2);
+p1.removeSubpopulation();	
+p2.removeSubpopulation();	
+}
+
+30:49 early() {
+	p4.fitnessScaling = K1 / p4.individualCount;
+
+}
+30:49 late() {
+// random migration
+from_p4 = sample(p4.individuals, asInteger(p4.individualCount*mig2));
+from_p3 = sample(p3.individuals, asInteger(p3.individualCount*mig1));
+p4.takeMigrants(from_p3); 
+p3.takeMigrants(from_p4);
+}
+
+
+
+
+//do you need to output two files for the two different populations?
+49 late() {
+//sim.outputFixedMutations();
+	//print(p2.individualCount);
+	//vary from 100 to 10000 to see if more or less sampling at the end effects your 
+	sim.outputFixedMutations("./congenital_plasma." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + "." + burnin + ".100.output.fix", append=F);
+	sim.outputFixedMutations("./congenital_plasma." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + "." + burnin + ".1000.output.fix", append=F);
+	sim.outputFixedMutations("./congenital_urine." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + "." + burnin + ".100.output.fix", append=F);
+	sim.outputFixedMutations("./congenital_urine." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + "." + burnin + ".1000.output.fix", append=F);
+	p4.outputMSSample(100, replace=F,filePath="./congenital_plasma." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + "." + burnin + ".100.output.ms");
+	p3.outputMSSample(100, replace=F,filePath="./congenital_urine." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr +  "." + burnin + ".100.output.ms");
+	p4.outputMSSample(1000, replace=F,filePath="./congenital_plasma." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr + "." + burnin + ".1000.output.ms");
+	p3.outputMSSample(1000, replace=F,filePath="./congenital_urine." + DFE + "." + mu + "." + recomb + "." + progeny + "." + gr +  "." + burnin + ".1000.output.ms");
+ }
+  
