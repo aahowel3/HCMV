@@ -1,7 +1,7 @@
 for i in {1..20}
 do
 (
-mkdir replicate_"$i"
+#mkdir replicate_"$i"
 cd replicate_"$i"
         #generate all .ms and .fix files according to the list of param combinati9ons
         while IFS="," read -r col1 col2 col3 col4 col5 col6 col7 col8 col9 col10 col11 col12

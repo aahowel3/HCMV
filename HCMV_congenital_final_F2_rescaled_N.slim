@@ -80,7 +80,7 @@ initialize()
 	community.tick = 1;
 	sim.addSubpop("p2", 0, haploid=T);
 	p2.takeMigrants(sample(p1.individuals, 43));
-	p1.removeSubpopulation();	
+//	p1.removeSubpopulation();	
 	}
 	else {
 	sim.addSubpop("p2", 43, haploid=T);
@@ -173,6 +173,7 @@ p3.takeMigrants(from_p2);
 //F2 admixture event 
 //occurs at 198 days ago - reversed is day 293 - scaled = day 29 
 29 late () {
+sim.addSubpop("p4", 0, haploid=T);
 from_p1 = sample(p1.individuals, asInteger(p1.individualCount*0.97));
 from_p2 = sample(p2.individuals, asInteger(p2.individualCount*0.03));
 p4.takeMigrants(from_p1); 
