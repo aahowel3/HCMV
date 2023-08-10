@@ -1,5 +1,8 @@
 # HCMV SLiM
 
+n each replicate how to get a "goodcombos" list to filter into terbotfiltering to fitler into sc2
+cat 100bi_10tricombos.csv | grep "plasma_100_bi" | grep "good" | awk '{print $2}'
+
 new file HCMV_slim_onlysim_leftovers2.sh - checks whichs combos are missing and runs only those
 input file HAS to have carriage returns removed first
 tr '\r' , < params_congenital.txt > params_congenital_nor.txt
